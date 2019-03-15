@@ -5,10 +5,10 @@ use strict;
 use HTTP::Request::Common;
 use LWP::UserAgent;
 use JSON;
-use Nagios::Plugin;
+use Monitoring::Plugin;
 use Data::Dumper;
 
-my $np = Nagios::Plugin->new(
+my $np = Monitoring::Plugin->new(
     usage => "Usage: %s -u|--url <http://user:pass\@host:port/url> -a|--attributes <attributes> "
     . "[ -c|--critical <thresholds> ] [ -w|--warning <thresholds> ] "
     . "[ -e|--expect <value> ] "
@@ -77,7 +77,7 @@ $np->add_arg(
 
 $np->add_arg(
     spec => 'outputvars|o=s',
-    help => "-o, --outputvars eg. '* or {status_message}'\n   "    
+    help => "-o, --outputvars eg. '* or {status_message}'\n   "
     . "CSV list of fields output in status message, same syntax as perfvars"
 );
 
@@ -152,7 +152,7 @@ my $resultTmp;
 foreach my $attribute (sort keys %attributes){
     my $check_value;
     my $check_value_str = '$check_value = $json_response->'.$attribute;
-    
+
     if ($np->opts->verbose) { (print Dumper ($check_value_str))};
     eval $check_value_str;
 
@@ -234,7 +234,7 @@ if ($np->opts->perfvars) {
                 $np->add_perfdata(
                     label => lc $label,
                     value => $perf_value,
-                );            
+                );
             }
         }
     }
